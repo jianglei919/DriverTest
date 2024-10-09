@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('layouts/header'); -%>
+
+    <body>
+
+        <%- include('layouts/navbar'); -%>
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('assets/img/G2-DriveTest-bg.webp')">
+
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container">
+                <h2>G2 Drive Test Application</h2>
+                <form id="g2TestForm" action="/g2" method="post">
+                    <div class="form-group">
+                        <h4>Personal Information</h4>
+                        <label for="firstname">First Name:</label>
+                        <input type="text" class="form-control" id="firstname" placeholder="Enter first name" name="firstname" required>
+                        
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" class="form-control" id="lastname" placeholder="Enter last name" name="lastname" required>
+            
+                        <label for="LicenseNo">License Number:</label>
+                        <input type="text" class="form-control" id="LicenseNo" placeholder="Enter license number" name="LicenseNo" maxlength="8" required>
+            
+                        <label for="Age">Age:</label>
+                        <input type="number" class="form-control" id="Age" placeholder="Enter age" name="Age" required>
+            
+                        <!-- <label for="dob">Date of Birth:</label>
+                        <input type="date" class="form-control" id="dob" name="dob"> -->
+                    </div>
+            
+                    <br>
+
+                    <div class="form-group">
+                        <h4>Car Information</h4>
+                        <label for="make">Make:</label>
+                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" required>
+            
+                        <label for="model">Model:</label>
+                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" required>
+            
+                        <label for="year">Year:</label>
+                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" required>
+            
+                        <label for="platno">Plate Number:</label>
+                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" required>
+                    </div>
+            
+                    <br>
+                    
+                    <button id="g2DriveBtn" type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </main>
+
+        <%- include('layouts/footer'); -%>
+
+        <%- include('layouts/scripts'); -%>
+    </body>
+</html>

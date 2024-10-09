@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('layouts/header'); -%>
+
+    <body>
+
+        <%- include('layouts/navbar'); -%>
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('assets/img/login-bg.webp')">
+            
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container">
+                <h2>Login Page</h2>
+                <form id="loginForm" action="/login" method="post">
+                    <div class="form-group">
+                        <label for="firstname">First Name:</label>
+                        <input type="text" class="form-control" id="firstname" placeholder="Enter first name" name="firstname" required>
+                        
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" class="form-control" id="lastname" placeholder="Enter last name" name="lastname" required>
+                    </div>
+                    <br>
+                    <button id="loginBtn" type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </main>
+
+        <%- include('layouts/footer'); -%>
+
+        <%- include('layouts/scripts'); -%>
+    </body>
+</html>

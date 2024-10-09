@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('layouts/header'); -%>
+
+    <body>
+
+        <%- include('layouts/navbar'); -%>
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('assets/img/G-DriveTest-bg.webp')">
+            
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container">    
+                <% if (notFound) { %>
+                    <h2>License Information</h2>
+                    <p>No User Found. Go <a href="/g2">back</a> and enter new user.</p>
+                <% } else if (driverInfo) { %>
+                    <h2>License Information Update</h2>
+                    <form id="gTestForm" action="/g/update" method="post">
+                        <div class="form-group">
+                            <input type="hidden" name="licenseNumber" value="<%= driverInfo.LicenseNo %>">
+
+                            <h4>Personal Information</h4>
+                            <label for="firstname">First Name:</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname" value="<%= driverInfo.firstname %>" disabled>
+                            
+                            <label for="lastname">Last Name:</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" value="<%= driverInfo.lastname %>" disabled>
+                
+                            <label for="LicenseNo">License Number:</label>
+                            <input type="text" class="form-control" id="LicenseNo" name="LicenseNo" maxlength="8" value="<%= driverInfo.LicenseNo %>" disabled>
+                
+                            <label for="Age">Age:</label>
+                            <input type="number" class="form-control" id="Age" name="Age" value="<%= driverInfo.Age %>" disabled>
+                
+                            <br>
+
+                            <h4>Car Information</h4>
+                            <label for="make">Make:</label>
+                            <input type="text" class="form-control" id="make" placeholder="Enter car make" name="make" value="<%= driverInfo.car_details.make %>">
+                
+                            <label for="model">Model:</label>
+                            <input type="text" class="form-control" id="model" placeholder="Enter car model" name="model" value="<%= driverInfo.car_details.model %>">
+                
+                            <label for="year">Year:</label>
+                            <input type="number" class="form-control" id="year" placeholder="Enter car year" name="year" value="<%= driverInfo.car_details.year %>">
+                
+                            <label for="platno">Plate Number:</label>
+                            <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="platno" value="<%= driverInfo.car_details.platno %>">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                <% } else { %>
+                    <h2>License Information Retrieval</h2>
+                    <form id="gTestUpdateForm" action="/g" method="post">
+                        <div class="form-group">
+                            <label for="LicenseNo">License Number:</label>
+                            <input type="text" class="form-control" id="LicenseNo" placeholder="Enter license number" name="LicenseNo" maxlength="8" required>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Retrieve Data</button>
+                        </div>
+                    </form>
+                <% } %>    
+            </div>
+        </main>
+        
+        <%- include('layouts/footer'); -%>
+
+        <%- include('layouts/scripts'); -%>
+
+    </body>
+</html>
