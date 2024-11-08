@@ -8,7 +8,7 @@ const DriverTestInfoSchema = new Schema({
   lastname: { type: String, default: 'default' },
   LicenseNo: { type: String, default: 'default' },
   Age: { type: String, default: '0' },
-  Username: { type: String, required: true },
+  Username: { type: String, required: true, unique: true },
   Password: { type: String, required: true },
   UserType: { type: String, default: 'Driver' },
   car_details: {
