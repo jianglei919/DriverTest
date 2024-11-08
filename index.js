@@ -1,125 +1,78 @@
 const express = require('express');
+const expressSession = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
-const DriverTestInfo = require('./models/DriverTestInfo.js');
-const mongoose = require('mongoose');
-
-mongoose.connect(
-  'mongodb+srv://leighton:qwerty123456@cluster0.3vvnl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-);
 
 const app = new express();
 const ejs = require('ejs');
 
 app.set('view engine', 'ejs');
 
+global.loggedIn = null;
+global.isDriver = null;
+global.isDefaultInfo = null;
+
 app.use(express.static('public'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-//Index Page
-app.get('/', (req, res) => {
-  res.render('Index');
+app.use(
+  expressSession({
+    secret: 'keyboard cat',
+  })
+);
+app.use('*', (req, res, next) => {
+  loggedIn = req.session.userId;
+  isDriver = req.session.driverType == 'Driver';
+  isDefaultInfo = req.session.licenseNo == 'default';
+  next();
 });
 
-// Login Page
-app.get('/login', (req, res) => {
-  res.render('Login');
-});
-app.post('/login', async (req, res) => {
-  try {
-    console.log("Login page start.");
-
-    const { firstname, lastname } = req.body;
-
-    console.log("login page FirstName= " + firstname + ", LastName=" + lastname);
-
-    const driver = await DriverTestInfo.findOne({ firstname: firstname, lastname: lastname });
-
-    console.log("login page find driver info: " + driver);
-
-    if (driver) {
-      res.redirect('/g');
-    } else {
-      res.redirect('/g2');
-    }
-
-    console.log("Login page end.");
-  } catch (error) {
-    res.status(400).send('Error processing Login page request');
-    console.error('Error processing Login page: ', error);
-  }
-});
+const mongoose = require('mongoose');
+mongoose.connect(
+  'mongodb+srv://leighton:qwerty123456@cluster0.3vvnl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+);
 
 
-// G Page: Fetch and Update Data
-app.get('/g', (req, res) => {
-  res.render('G', { driverInfo: null, notFound: false });
-});
-app.post('/g', async (req, res) => {
-  try {
-    console.log("G page start.");
+const homeController = require('./controllers/home');
 
-    const { LicenseNo } = req.body;
+const signUpUserController = require('./controllers/signUp');
+const storeUserController = require('./controllers/storeUser');
 
-    console.log("G page param= " + LicenseNo);
+const loginController = require('./controllers/login');
+const logoutController = require('./controllers/logout');
+const userLoginController = require('./controllers/userLogin');
 
-    const driverInfo = await DriverTestInfo.findOne({ LicenseNo: LicenseNo });
-    if (!driverInfo) {
-      return res.render('G', { driverInfo: null, notFound: true });
-    }
-    res.render('G', { driverInfo, notFound: false });
+const g2Controller = require('./controllers/g2');
+const g2StoreController = require('./controllers/g2Store');
 
-    console.log("G page end.");
-  } catch (error) {
-    res.status(400).send('Error processing G page request');
-    console.error('Error processing G page: ', error);
-  }
-});
-app.post('/g/update', async (req, res) => {
-  try {
-    console.log("G update page start.");
+const gController = require('./controllers/g');
+const gRetrievalController = require('./controllers/gRetrieval');
 
-    const { licenseNumber, make, model, year, platno } = req.body;
+const authMiddleware = require('./middleware/authMiddleware');
+const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
 
-    console.log("G update page licenseNumber=" + licenseNumber);
+//Home
+app.get('/', homeController);
 
-    const updateResult = await DriverTestInfo.updateOne({ LicenseNo: licenseNumber }, {
-      '$set': {
-        'car_details.make': make,
-        'car_details.model': model,
-        'car_details.year': year,
-        'car_details.platno': platno
-      }
-    });
+//SignUp
+app.get('/auth/signUp', redirectIfAuthenticatedMiddleware, signUpUserController)
+app.post('/user/signUp', redirectIfAuthenticatedMiddleware, storeUserController);
 
-    res.redirect('/g');
+// Login/Logout
+app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
+app.get('/auth/logout', logoutController);
+app.post('/user/login', redirectIfAuthenticatedMiddleware, userLoginController);
 
-    console.log("G update page end. updateResult=" + updateResult);
-  } catch (error) {
-    res.status(400).send('Error processing G page update request');
-    console.error('Error processing G page update: ', error);
-  }
-});
+// G2
+app.get('/g2', authMiddleware, g2Controller);
+app.post('/g2/store', authMiddleware, g2StoreController);
 
-// G2 Page
-app.get('/g2', (req, res) => {
-  res.render('G2');
-});
-app.post('/g2', async (req, res) => {
-  try {
-    console.log("G2 page start.");
+// G
+app.get('/g', authMiddleware, gController);
+app.post('/g/retrieval', authMiddleware, gRetrievalController);
 
-    const newDriver = new DriverTestInfo(req.body);
-    const saveResult = await newDriver.save();
-    res.redirect('/g');
-
-    console.log("G2 page end. saveResult=" + saveResult);
-  } catch (error) {
-    res.status(400).send('Error processing G2 page request');
-    console.error('Error processing G2 page: ', error);
-  }
-});
+// notfound
+app.use((req, res) => res.render('Notfound'));
 
 app.listen(4000, () => {
   console.log('App listening on port 4000');

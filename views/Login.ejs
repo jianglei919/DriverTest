@@ -8,20 +8,22 @@
         <%- include('layouts/navbar'); -%>
 
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('assets/img/login-bg.webp')">
+        <header class="masthead" style="background-image: url('/assets/img/login-bg.webp')">
             
         </header>
         <!-- Main Content-->
         <main class="mb-4">
             <div class="container">
                 <h2>Login Page</h2>
-                <form id="loginForm" action="/login" method="post">
+                <form id="loginForm" action="/user/login" method="POST">
                     <div class="form-group">
-                        <label for="firstname">First Name:</label>
-                        <input type="text" class="form-control" id="firstname" placeholder="Enter first name" name="firstname" required>
+                        <label for="Username">User Name:</label>
+                        <input type="text" class="form-control" id="Username" placeholder="Enter user name" name="Username" required>
                         
-                        <label for="lastname">Last Name:</label>
-                        <input type="text" class="form-control" id="lastname" placeholder="Enter last name" name="lastname" required>
+                        <br>
+
+                        <label for="Password">Password:</label>
+                        <input type="text" class="form-control" id="Password" placeholder="Enter password" name="Password" required>
                     </div>
                     <br>
                     <button id="loginBtn" type="submit" class="btn btn-primary">Login</button>
