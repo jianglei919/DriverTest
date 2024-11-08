@@ -1,6 +1,7 @@
 const express = require('express');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 
 const app = new express();
 const ejs = require('ejs');
@@ -15,6 +16,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(flash());
 app.use(
   expressSession({
     secret: 'keyboard cat',

@@ -17,8 +17,10 @@ module.exports = async (req, res) => {
 
         console.log("Store User. saveResult=" + saveResult);
     } catch (error) {
-        res.status(400).send('Error processing SignUp page request');
-        console.error('Error processing SignUp page: ', error);
+        const validationErrors = Object.keys(error.errors).map(key => error.errors[key].message);
+        req.flash('validationErrors', validationErrors);
+        req.flash('data', req.body);
+        return res.redirect('/auth/signUp');
     }
     res.redirect('/');
 };

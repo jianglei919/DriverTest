@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+var uniqueValidator = require('mongoose-unique-validator');
+
 const Schema = mongoose.Schema;
 
 const DriverTestInfoSchema = new Schema({
@@ -8,8 +10,8 @@ const DriverTestInfoSchema = new Schema({
   lastname: { type: String, default: 'default' },
   LicenseNo: { type: String, default: 'default' },
   Age: { type: String, default: '0' },
-  Username: { type: String, required: true, unique: true },
-  Password: { type: String, required: true },
+  Username: { type: String, required: [true,'Please provide username'], unique: true },
+  Password: { type: String, required: [true,'Please provide password'] },
   UserType: { type: String, default: 'Driver' },
   car_details: {
     make: { type: String, default: 'default' },
@@ -18,6 +20,8 @@ const DriverTestInfoSchema = new Schema({
     platno: { type: String, default: 'default' },
   }
 });
+
+DriverTestInfoSchema.plugin(uniqueValidator);
 
 DriverTestInfoSchema.pre('save', async function (next) {
   const driverInfo = this;
