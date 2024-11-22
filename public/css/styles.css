@@ -104,6 +104,28 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.time-slot {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px 15px;
+  background-color: gray;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+}
+.time-slot.selected {
+  background-color: blue;
+}
+.time-slot.disabled {
+  background-color: lightgray;
+  cursor: not-allowed;
+}
+.slot-radio {
+  margin-left: 20px;
+}
+
 h1, h2{
   align-items: center;
   justify-content: center;

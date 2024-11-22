@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('layouts/header'); -%>
+
+    <body>
+
+        <%- include('layouts/navbar'); -%>
+
+            <!-- Page Header-->
+            <header class="masthead" style="background-image: url('/assets/img/home-bg.webp')">
+
+            </header>
+            <!-- Main Content-->
+            <main class="mb-4">
+                <div class="container">
+                    <h1>Create Appointment Slots</h1>
+                    <% if(errors != null && errors.length > 0){ %>
+                        <ul class="list-group"></ul>
+                        <% for (var i = 0; i < errors.length; i++) { %>
+                            <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                        <% } %>
+                        </ul>
+                    <% } %>
+                    <form id="postAppointmentForm" action="/admin/store" method="POST">
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" name="date" id="date" class="form-control" value="<%= date %>" required />
+                            <br>
+
+                            <label>Time Slot Available:</label>
+                            <input type="radio" id="timeSlotAvailable" name="isTimeSlotAvailable" value="true" class="slot-radio" checked required>
+                            <label for="timeSlotAvailable">True</label>
+                            <input type="radio" id="timeSlotUnAvailable" name="isTimeSlotAvailable" value="false">
+                            <label for="timeSlotUnAvailable">False</label>
+                            <br><br>
+
+                            <label for="time">Selected Time:</label>
+                            <input type="text" id="selectedTime" name="time" class="form-control" value="<%= time %>" readonly required />
+                            <br>
+
+                            <div id="timeButtons" class="form-group">
+                                <!-- Time slot buttons will be generated here -->
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Add Slot</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+
+            <%- include('layouts/footer'); -%>
+
+            <%- include('layouts/scripts'); -%>
+
+    </body>
+
+</html>

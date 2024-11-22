@@ -10,9 +10,13 @@ const DriverTestInfoSchema = new Schema({
   lastname: { type: String, default: 'default' },
   LicenseNo: { type: String, default: 'default' },
   Age: { type: String, default: '0' },
-  Username: { type: String, required: [true,'Please provide username'], unique: true },
+  Username: { type: String, required: [true,'Please provide username'] },
   Password: { type: String, required: [true,'Please provide password'] },
   UserType: { type: String, default: 'Driver' },
+  AppointmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AppointmentInfo',
+  },
   car_details: {
     make: { type: String, default: 'default' },
     model: { type: String, default: 'default' },

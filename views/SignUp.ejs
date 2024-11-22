@@ -15,6 +15,13 @@
         <main class="mb-4">
             <div class="container">
                 <h2>Login Page</h2>
+                <% if(errors != null && errors.length > 0){ %>
+                    <ul class="list-group"></ul>
+                    <% for (var i = 0; i < errors.length; i++) { %>
+                        <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                    <% } %>
+                    </ul>
+                <% } %>
                 <form id="signUpForm" action="/user/signUp" method="post">
                     <div class="form-group">
                         <label for="Username">User Name:</label>
@@ -28,7 +35,7 @@
                         <br>
 
                         <label for="Password2">Confirm Password:</label>
-                        <input type="password" class="form-control" id="Password2" placeholder="Enter password" name="Password2" required>
+                        <input type="password" class="form-control" id="Password2" placeholder="Enter password" name="Password2" value="<%= password %>" required>
 
                         <br>
 

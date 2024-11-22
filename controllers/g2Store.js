@@ -1,4 +1,5 @@
 const DriverTestInfo = require('../models/DriverTestInfo.js');
+const AppointmentInfo = require('../models/AppointmentInfo.js');
 const path = require('path');
 
 module.exports = async (req, res) => {
@@ -29,6 +30,12 @@ module.exports = async (req, res) => {
             newDriver.lastname = reqDriverInfo.lastname;
             newDriver.LicenseNo = reqDriverInfo.LicenseNo;
             newDriver.Age = reqDriverInfo.Age;
+        }
+
+        if (reqDriverInfo.AppointmentId) {
+            newDriver.AppointmentId = reqDriverInfo.AppointmentId;
+            const newAppointmentInfo = await AppointmentInfo.findById(reqDriverInfo.AppointmentId);
+            req.session.appointmentInfo = newAppointmentInfo;
         }
 
         await DriverTestInfo.findByIdAndUpdate(_id, newDriver);

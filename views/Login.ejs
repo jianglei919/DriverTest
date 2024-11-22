@@ -15,15 +15,22 @@
         <main class="mb-4">
             <div class="container">
                 <h2>Login Page</h2>
+                <% if(errors != null && errors.length > 0){ %>
+                    <ul class="list-group"></ul>
+                    <% for (var i = 0; i < errors.length; i++) { %>
+                        <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                    <% } %>
+                    </ul>
+                <% } %>
                 <form id="loginForm" action="/user/login" method="POST">
                     <div class="form-group">
                         <label for="Username">User Name:</label>
-                        <input type="text" class="form-control" id="Username" placeholder="Enter user name" name="Username" required>
+                        <input type="text" class="form-control" id="Username" placeholder="Enter user name" name="Username" value="<%= username %>" required>
                         
                         <br>
 
                         <label for="Password">Password:</label>
-                        <input type="text" class="form-control" id="Password" placeholder="Enter password" name="Password" required>
+                        <input type="password" class="form-control" id="Password" placeholder="Enter password" name="Password" required>
                     </div>
                     <br>
                     <button id="loginBtn" type="submit" class="btn btn-primary">Login</button>

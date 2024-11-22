@@ -75,6 +75,26 @@
                         <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" value="<%= driverInfo.car_details.platno %>">
                         <% } %>    
                     </div>
+
+                    <br>
+
+                    <div class="form-group">
+                        <% if (!isDefaultInfo) { %>
+                            <h4>Appointment Information</h4>
+                            <input type="text" id="AppointmentId" name="AppointmentId" value="<%= appointmentInfo._id %>" style="display: none;"/>
+                            <label for="date">Date:</label>
+                            <input type="date" name="date" id="date" class="form-control" value="<%= appointmentInfo.date %>" required />
+                            <br>
+
+                            <label for="time">Selected Time:</label>
+                            <% if (appointmentInfo.time) { %> 
+                                <input type="text" class="form-control" id="time" name="time" value="<%= appointmentInfo.time %>" disabled/>
+                            <% } %>  
+                            <div id="timeButtons" class="form-group">
+                                <!-- Time slot buttons will be here -->  
+                            </div>
+                        <% } %>
+                    </div>
             
                     <br>
                     
@@ -86,5 +106,13 @@
         <%- include('layouts/footer'); -%>
 
         <%- include('layouts/scripts'); -%>
+
+        <!-- <script>
+            $(document).ready(function () {
+                $('#date').on('change', function () {
+                    console.log('date was changed');
+                });
+            });
+        </script> -->
     </body>
 </html>

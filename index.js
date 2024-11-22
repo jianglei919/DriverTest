@@ -10,6 +10,7 @@ app.set('view engine', 'ejs');
 
 global.loggedIn = null;
 global.isDriver = null;
+global.isAdmin = null;
 global.isDefaultInfo = null;
 
 app.use(express.static('public'));
@@ -25,6 +26,7 @@ app.use(
 app.use('*', (req, res, next) => {
   loggedIn = req.session.userId;
   isDriver = req.session.driverType == 'Driver';
+  isAdmin = req.session.driverType == 'Admin';
   isDefaultInfo = req.session.licenseNo == 'default';
   next();
 });
@@ -50,6 +52,11 @@ const g2StoreController = require('./controllers/g2Store');
 const gController = require('./controllers/g');
 const gRetrievalController = require('./controllers/gRetrieval');
 
+const adminController = require('./controllers/admin');
+const adminStoreController = require('./controllers/adminStore');
+
+const appointmentController = require('./controllers/getAppointment');
+
 const authMiddleware = require('./middleware/authMiddleware');
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
 
@@ -72,6 +79,13 @@ app.post('/g2/store', authMiddleware, g2StoreController);
 // G
 app.get('/g', authMiddleware, gController);
 app.post('/g/retrieval', authMiddleware, gRetrievalController);
+
+//admin
+app.get('/admin', authMiddleware, adminController);
+app.post('/admin/store', authMiddleware, adminStoreController);
+
+//appointment
+app.get('/get/appointment', appointmentController);
 
 // notfound
 app.use((req, res) => res.render('Notfound'));
