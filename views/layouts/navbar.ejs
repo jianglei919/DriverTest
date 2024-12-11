@@ -17,7 +17,11 @@
 
               <% if (isAdmin) { %>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/admin">APPOINTMENT</a></li>
-                <% } %>
+              <% } %>
+
+              <% if (isExaminer) { %>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/examiner">EXAM</a></li>
+              <% } %>
 
               <% if (loggedIn) { %>
               <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/auth/logout">LOGOUT</a></li>

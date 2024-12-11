@@ -22,24 +22,22 @@
                         <% } %>
                         </ul>
                     <% } %>
+                    <% if(success != null){ %>
+                        <label class="list-group-item-success">
+                            <%= success %>
+                        </label>
+                    <% } %>
                     <form id="postAppointmentForm" action="/admin/store" method="POST">
                         <div class="form-group">
                             <label for="date">Date:</label>
-                            <input type="date" name="date" id="date" class="form-control" value="<%= date %>" required />
+                            <input type="date" name="date" id="adminDate" class="form-control" value="<%= date %>" required />
                             <br>
-
-                            <label>Time Slot Available:</label>
-                            <input type="radio" id="timeSlotAvailable" name="isTimeSlotAvailable" value="true" class="slot-radio" checked required>
-                            <label for="timeSlotAvailable">True</label>
-                            <input type="radio" id="timeSlotUnAvailable" name="isTimeSlotAvailable" value="false">
-                            <label for="timeSlotUnAvailable">False</label>
-                            <br><br>
 
                             <label for="time">Selected Time:</label>
                             <input type="text" id="selectedTime" name="time" class="form-control" value="<%= time %>" readonly required />
                             <br>
 
-                            <div id="timeButtons" class="form-group">
+                            <div id="adminTimeButtons" class="form-group">
                                 <!-- Time slot buttons will be generated here -->
                             </div>
                             <br>

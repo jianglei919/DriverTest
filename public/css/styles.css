@@ -122,8 +122,40 @@ body {
   background-color: lightgray;
   cursor: not-allowed;
 }
+.time-slot.available {
+  background-color: #4CAF50;
+  color: white;
+}
+.time-slot.unavailable {
+  background-color: #f44336;
+  color: white;
+  cursor: not-allowed;
+}
+.time-slot.selected {
+  background-color: #2196F3;
+  color: white;
+}
 .slot-radio {
   margin-left: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+textarea {
+  width: 100%;
+  height: 60px;
+  resize: none;
+  margin-bottom: 8px;
 }
 
 h1, h2{
@@ -10777,6 +10809,14 @@ header.masthead .post-heading .meta a {
   header.masthead .post-heading .subheading {
     font-size: 1.875rem;
   }
+}
+
+.masthead {
+  background-size: contain; /* Ensures the entire image fits within the header */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  width: 100%; /* Ensures the header spans the full width */
+  height: 400px; /* Set a fixed height for the header */
 }
 
 .section-heading {

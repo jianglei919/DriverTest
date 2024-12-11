@@ -15,21 +15,33 @@
         <main class="mb-4">
             <div class="container">
                 <h2>G2 Drive Test Application</h2>
+                <% if(errors != null && errors.length > 0){ %>
+                    <ul class="list-group"></ul>
+                    <% for (var i = 0; i < errors.length; i++) { %>
+                        <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                    <% } %>
+                    </ul>
+                <% } %>
+                <% if(success != null){ %>
+                    <label class="list-group-item-success">
+                        <%= success %>
+                    </label>
+                <% } %>
                 <form id="g2TestForm" action="/g2/store" method="post">
                     <div class="form-group">
                         <h4>Personal Information</h4>
                         <% if (isDefaultInfo) { %>
                         <label for="firstname">First Name:</label>
-                        <input type="text" class="form-control" id="firstname" placeholder="Enter first name" name="firstname" required>
+                        <input type="text" class="form-control" id="firstname" placeholder="Enter first name" name="firstname" required <%= isFinalStatus ? 'disabled' : '' %> >
                         
                         <label for="lastname">Last Name:</label>
-                        <input type="text" class="form-control" id="lastname" placeholder="Enter last name" name="lastname" required>
+                        <input type="text" class="form-control" id="lastname" placeholder="Enter last name" name="lastname" required <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="LicenseNo">License Number:</label>
-                        <input type="text" class="form-control" id="LicenseNo" placeholder="Enter license number" name="LicenseNo" maxlength="8" required>
+                        <input type="text" class="form-control" id="LicenseNo" placeholder="Enter license number" name="LicenseNo" maxlength="8" required <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="Age">Age:</label>
-                        <input type="number" class="form-control" id="Age" placeholder="Enter age" name="Age" required>
+                        <input type="number" class="form-control" id="Age" placeholder="Enter age" name="Age" required <%= isFinalStatus ? 'disabled' : '' %> >
                         <% } else { %>
                         <label for="firstname">First Name:</label>
                         <input type="text" class="form-control" id="firstname" name="firstname" value="<%= driverInfo.firstname %>" disabled>
@@ -51,28 +63,28 @@
                         <h4>Car Information</h4>
                         <% if (isDefaultInfo) { %>
                         <label for="make">Make:</label>
-                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" required>
+                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" required <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="model">Model:</label>
-                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" required>
+                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" required <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="year">Year:</label>
-                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" required>
+                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" required <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="platno">Plate Number:</label>
-                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" required>
+                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" required <%= isFinalStatus ? 'disabled' : '' %> >
                         <% } else { %>
                         <label for="make">Make:</label>
-                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" value="<%= driverInfo.car_details.make %>">
+                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" value="<%= driverInfo.car_details.make %>" <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="model">Model:</label>
-                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" value="<%= driverInfo.car_details.model %>">
+                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" value="<%= driverInfo.car_details.model %>" <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="year">Year:</label>
-                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" value="<%= driverInfo.car_details.year %>">
+                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" value="<%= driverInfo.car_details.year %>" <%= isFinalStatus ? 'disabled' : '' %> >
             
                         <label for="platno">Plate Number:</label>
-                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" value="<%= driverInfo.car_details.platno %>">
+                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" value="<%= driverInfo.car_details.platno %>" <%= isFinalStatus ? 'disabled' : '' %> >
                         <% } %>    
                     </div>
 
@@ -83,7 +95,7 @@
                             <h4>Appointment Information</h4>
                             <input type="text" id="AppointmentId" name="AppointmentId" value="<%= appointmentInfo._id %>" style="display: none;"/>
                             <label for="date">Date:</label>
-                            <input type="date" name="date" id="date" class="form-control" value="<%= appointmentInfo.date %>" required />
+                            <input type="date" name="date" id="date" class="form-control" value="<%= appointmentInfo.date %>" required <%= isFinalStatus ? 'disabled' : '' %> />
                             <br>
 
                             <label for="time">Selected Time:</label>
@@ -97,8 +109,25 @@
                     </div>
             
                     <br>
+
+                    <div class="form-group">
+                        <% if (!isDefaultInfo) { %>
+                            <h4>Test Result Information</h4>
+                            <label for="TestType">Test Type:</label>
+                            <input type="text" name="TestType" id="TestType" class="form-control" value="<%= driverInfo.TestType %>" disabled />
+
+                            <label for="TestResult">Test Result:</label>
+                            <input type="text" name="TestResult" id="TestResult" class="form-control" value="<%= driverInfo.TestResult %>" disabled />
+
+                            <label for="Comment">Test Comment:</label>
+                            <input type="text" name="Comment" id="Comment" class="form-control" value="<%= driverInfo.Comment %>" disabled />
+                            <br>
+                        <% } %>
+                    </div>
                     
-                    <button id="g2StoreDriveBtn" type="submit" class="btn btn-primary">SEND</button>
+                    <% if (!isFinalStatus) { %>
+                        <button id="g2StoreDriveBtn" type="submit" class="btn btn-primary">Save</button>
+                    <% } %> 
                 </form>
             </div>
         </main>
@@ -106,13 +135,5 @@
         <%- include('layouts/footer'); -%>
 
         <%- include('layouts/scripts'); -%>
-
-        <!-- <script>
-            $(document).ready(function () {
-                $('#date').on('change', function () {
-                    console.log('date was changed');
-                });
-            });
-        </script> -->
     </body>
 </html>

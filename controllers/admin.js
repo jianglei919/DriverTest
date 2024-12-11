@@ -10,8 +10,9 @@ module.exports = (req, res) => {
     }
 
     res.render('Admin', {
-        errors: req.flash('validationErrors'),
         date: date,
         time: time,
+        errors: req.flash('validationErrors'),
+        success: req.flash('success')
     });
 };

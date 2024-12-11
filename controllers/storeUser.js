@@ -7,10 +7,11 @@ module.exports = async (req, res) => {
 
         const newDriver = new DriverTestInfo(req.body);
 
+        req.flash('data', req.body);
+
         //checked twice password
         if (req.body.Password2 != newDriver.Password) {
             req.flash('validationErrors', [`Inconsistent password input twice password1: ${newDriver.Password}, password2: ${req.body.Password2}`]);
-            req.flash('data', req.body);
             return res.redirect('/auth/signUp');
         }
 
@@ -18,7 +19,6 @@ module.exports = async (req, res) => {
         let existDriverInfo = await DriverTestInfo.findOne({ Username: newDriver.Username });
         if (existDriverInfo) {
             req.flash('validationErrors', [`Username already exists for : ${newDriver.Username}`]);
-            req.flash('data', req.body);
             return res.redirect('/auth/signUp');
         }
 
@@ -26,7 +26,6 @@ module.exports = async (req, res) => {
         existDriverInfo = await DriverTestInfo.findOne({ LicenseNo: newDriver.LicenseNo, UserType: newDriver.UserType });
         if (existDriverInfo) {
             req.flash('validationErrors', [`LicenseNo already exists for : ${newDriver.LicenseNo}`]);
-            req.flash('data', req.body);
             return res.redirect('/auth/signUp');
         }
 
@@ -44,7 +43,6 @@ module.exports = async (req, res) => {
             );
             req.flash('validationErrors', validationErrors);
         }
-        req.flash('data', req.body);
         return res.redirect('/auth/signUp');
     }
     res.redirect('/auth/login');

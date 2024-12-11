@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('layouts/header'); -%>
+
+    <body>
+
+        <%- include('layouts/navbar'); -%>
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('/assets/img/home-bg.webp')">
+
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container">
+                <h2>Examiner Dashboard</h2>
+                <% if(errors != null && errors.length > 0){ %>
+                    <ul class="list-group"></ul>
+                    <% for (var i = 0; i < errors.length; i++) { %>
+                        <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                    <% } %>
+                    </ul>
+                <% } %>
+                <% if(success){ %>
+                    <label class="list-group-item-success">
+                        <%= success %>
+                    </label>
+                <% } %>
+                <form id="examinerGetForm" method="post">
+                    <div class="form-group">
+                        <label>Test Type:</label>
+                        <input type="radio" id="TestTypeG2" name="TestType" value="G2" class="slot-radio" checked required>
+                        <label for="TestTypeG">G2</label>
+                        <input type="radio" id="TestTypeG" name="TestType" value="G">
+                        <label for="TestTypeG">G</label>
+                        <br><br>
+
+                        <!-- Filter by Name -->
+                        <label for="driverName">Driver Name:</label>
+                        <input type="text" class="form-control" name="driverName" id="driverName" placeholder="Enter driver name">
+                        <br>
+
+                        <!-- Filter by License Number -->
+                        <label for="LicenseNo">License Number:</label>
+                        <input type="text" class="form-control" id="LicenseNo" placeholder="Enter license number" name="LicenseNo" maxlength="8">
+                        <br>
+
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>  
+                </form>
+            </div>
+
+            <div class="container">
+                <h2>Driver Appointments</h2>
+                <div class="form-group">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Driver Name</th>
+                                <th>License No</th>
+                                <th>Car Details</th>
+                                <th>Test Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 动态生成的内容插入到这里 -->
+                        </tbody>
+                    </table>
+                </div>  
+            </div>
+        </main>
+
+        <%- include('layouts/footer'); -%>
+
+        <%- include('layouts/scripts'); -%>
+    </body>
+</html>

@@ -22,7 +22,10 @@ const DriverTestInfoSchema = new Schema({
     model: { type: String, default: 'default' },
     year: { type: String, default: '0' },
     platno: { type: String, default: 'default' },
-  }
+  },
+  TestType: { type: String, enum: ['G', 'G2'], default: 'G2' }, // Test type (G or G2)
+  TestResult: { type: String, enum: ['PASS', 'FAIL', 'PENDING'], default: 'PENDING' }, // Test result
+  Comment: { type: String, default: '' } // Examiner's comments
 });
 
 DriverTestInfoSchema.plugin(uniqueValidator);

@@ -1,6 +1,5 @@
 const DriverTestInfo = require('../models/DriverTestInfo.js');
 const AppointmentInfo = require('../models/AppointmentInfo.js');
-const path = require('path');
 
 module.exports = async (req, res) => {
     try {
@@ -9,8 +8,9 @@ module.exports = async (req, res) => {
 
         const oldDriverInfo = await DriverTestInfo.findById(_id);
         if (!oldDriverInfo) {
-            res.redirect('/');
             console.log("G2 page not find by _id=" + _id);
+            req.flash('validationErrors', ['Driver not found']);
+            res.redirect('/g2');
             return;
         }
 
@@ -22,34 +22,60 @@ module.exports = async (req, res) => {
                 model: reqDriverInfo.car_details.model,
                 year: reqDriverInfo.car_details.year,
                 platno: reqDriverInfo.car_details.platno
-            }
-        }
+            },
+            TestType: 'G2'
+        };
 
-        if (oldDriverInfo.UserType == 'Driver' && oldDriverInfo.LicenseNo == 'default') {
+        // 更新个人信息
+        if (oldDriverInfo.UserType === 'Driver' && oldDriverInfo.LicenseNo === 'default') {
             newDriver.firstname = reqDriverInfo.firstname;
             newDriver.lastname = reqDriverInfo.lastname;
             newDriver.LicenseNo = reqDriverInfo.LicenseNo;
             newDriver.Age = reqDriverInfo.Age;
         }
 
+        // 更新预约信息
         if (reqDriverInfo.AppointmentId) {
             newDriver.AppointmentId = reqDriverInfo.AppointmentId;
             const newAppointmentInfo = await AppointmentInfo.findById(reqDriverInfo.AppointmentId);
+
+            if (!newAppointmentInfo) {
+                req.flash('validationErrors', ['Invalid Appointment ID']);
+                res.redirect('/g2');
+                return;
+            }
+
             req.session.appointmentInfo = newAppointmentInfo;
+            newDriver.TestResult = 'PENDING';
+            newDriver.Comment = '';
+
+            // 更新新的预约时间段为不可用
+            newAppointmentInfo.isTimeSlotAvailable = false;
+            await newAppointmentInfo.save();
+        }
+
+        // 更新旧的预约时间段为可用
+        if (oldDriverInfo.AppointmentId) {
+            const oldAppointment = await AppointmentInfo.findById(oldDriverInfo.AppointmentId);
+            if (oldAppointment) {
+                oldAppointment.isTimeSlotAvailable = true;
+                await oldAppointment.save();
+            }
         }
 
         await DriverTestInfo.findByIdAndUpdate(_id, newDriver);
 
-        const newDriverInfo = await DriverTestInfo.findById(_id);
-        
-        req.session.driverType = newDriverInfo.UserType;
-        req.session.licenseNo = newDriverInfo.LicenseNo;
-        req.session.driverInfo = newDriverInfo;
+        // 更新 session 信息
+        const updatedDriverInfo = await DriverTestInfo.findById(_id);
+        req.session.driverType = updatedDriverInfo.UserType;
+        req.session.licenseNo = updatedDriverInfo.LicenseNo;
+        req.session.driverInfo = updatedDriverInfo;
 
-        console.log("G2 page end. newDriverInfo=" + newDriverInfo);
+        console.log("G2 page end. updatedDriverInfo=", updatedDriverInfo);
+        req.flash('success', 'Successfully updated information');
     } catch (error) {
-        res.status(400).send('Error processing G2 page request');
         console.error('Error processing G2 page: ', error);
+        req.flash('validationErrors', ['Error processing G2 page request']);
     }
-    res.redirect('/');
+    res.redirect('/g2');
 };

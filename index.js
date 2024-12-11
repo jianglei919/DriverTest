@@ -11,6 +11,7 @@ app.set('view engine', 'ejs');
 global.loggedIn = null;
 global.isDriver = null;
 global.isAdmin = null;
+global.isExaminer = null;
 global.isDefaultInfo = null;
 
 app.use(express.static('public'));
@@ -27,6 +28,7 @@ app.use('*', (req, res, next) => {
   loggedIn = req.session.userId;
   isDriver = req.session.driverType == 'Driver';
   isAdmin = req.session.driverType == 'Admin';
+  isExaminer = req.session.driverType == 'Examiner';
   isDefaultInfo = req.session.licenseNo == 'default';
   next();
 });
@@ -50,12 +52,16 @@ const g2Controller = require('./controllers/g2');
 const g2StoreController = require('./controllers/g2Store');
 
 const gController = require('./controllers/g');
-const gRetrievalController = require('./controllers/gRetrieval');
+const gStoreController = require('./controllers/g2Store');
 
 const adminController = require('./controllers/admin');
 const adminStoreController = require('./controllers/adminStore');
 
 const appointmentController = require('./controllers/getAppointment');
+
+const examinerController = require('./controllers/examiner');
+const examinerRetrievalController = require('./controllers/examinerRetrieval');
+const examinerStoreController = require('./controllers/examinerStore');
 
 const authMiddleware = require('./middleware/authMiddleware');
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
@@ -78,14 +84,19 @@ app.post('/g2/store', authMiddleware, g2StoreController);
 
 // G
 app.get('/g', authMiddleware, gController);
-app.post('/g/retrieval', authMiddleware, gRetrievalController);
+app.post('/g/store', authMiddleware, gStoreController);
 
 //admin
 app.get('/admin', authMiddleware, adminController);
 app.post('/admin/store', authMiddleware, adminStoreController);
 
 //appointment
-app.get('/get/appointment', appointmentController);
+app.get('/get/appointment', authMiddleware, appointmentController);
+
+//examiner
+app.get('/examiner', authMiddleware, examinerController)
+app.get('/examiner/retrieval', authMiddleware, examinerRetrievalController);
+app.post('/examiner/store/:id', authMiddleware, examinerStoreController);
 
 // notfound
 app.use((req, res) => res.render('Notfound'));

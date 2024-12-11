@@ -2,10 +2,10 @@ const AppointmentInfo = require('../models/AppointmentInfo.js');
 const path = require('path');
 
 module.exports = async (req, res) => {
-    const { date } = req.query;
-    console.log("/get/appointment: " + date);
     try {
-        const appointments = await AppointmentInfo.find({ date: date, isTimeSlotAvailable: true });
+        const { date } = req.query;
+        console.log("/get/appointment: " + date);
+        const appointments = await AppointmentInfo.find({ date: date });
         res.json(appointments);
     } catch (error) {
         console.error('Error fetching appointments:', error);
