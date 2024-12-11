@@ -49,7 +49,7 @@ module.exports = async (req, res) => {
         }
 
         // 更新旧的预约时间段为可用
-        if (oldDriverInfo.AppointmentId) {
+        if (oldDriverInfo.AppointmentId && oldDriverInfo.TestResult !== 'FAIL') {
             const oldAppointment = await AppointmentInfo.findById(oldDriverInfo.AppointmentId);
             if (oldAppointment) {
                 oldAppointment.isTimeSlotAvailable = true; // 设置旧预约为可用

@@ -48,16 +48,16 @@
 
                         <h4>Car Information</h4>
                         <label for="make">Make:</label>
-                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" value="<%= driverInfo.car_details.make %>" <%= isFinalStatus ? 'disabled' : '' %> >
+                        <input type="text" class="form-control" id="make" placeholder="Enter car make" name="car_details[make]" value="<%= driverInfo.car_details.make %>" <%= gPassed ? 'disabled' : '' %> >
             
                         <label for="model">Model:</label>
-                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" value="<%= driverInfo.car_details.model %>" <%= isFinalStatus ? 'disabled' : '' %> >
+                        <input type="text" class="form-control" id="model" placeholder="Enter car model" name="car_details[model]" value="<%= driverInfo.car_details.model %>" <%= gPassed ? 'disabled' : '' %> >
             
                         <label for="year">Year:</label>
-                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" value="<%= driverInfo.car_details.year %>" <%= isFinalStatus ? 'disabled' : '' %> >
+                        <input type="number" class="form-control" id="year" placeholder="Enter car year" name="car_details[year]" value="<%= driverInfo.car_details.year %>" <%= gPassed ? 'disabled' : '' %> >
             
                         <label for="platno">Plate Number:</label>
-                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" value="<%= driverInfo.car_details.platno %>" <%= isFinalStatus ? 'disabled' : '' %> >
+                        <input type="text" class="form-control" id="platno" placeholder="Enter plate number" name="car_details[platno]" value="<%= driverInfo.car_details.platno %>" <%= gPassed ? 'disabled' : '' %> >
 
                         <br>
 
@@ -65,7 +65,7 @@
                         <input type="text" id="AppointmentId" name="AppointmentId" value="<%= appointmentInfo._id %>" style="display: none;"/>
                         
                         <label for="date">Date:</label>
-                        <input type="date" name="date" id="date" class="form-control" value="<%= appointmentInfo.date %>" required <%= isFinalStatus ? 'disabled' : '' %> />
+                        <input type="date" name="date" id="date" class="form-control" value="<%= appointmentInfo.date %>" required <%= gPassed ? 'disabled' : '' %> />
                         
                         <br>
                         <label for="time">Selected Time:</label>
@@ -91,7 +91,7 @@
                         <% } %>
                     </div>
                     <br>
-                    <% if (!isFinalStatus) { %>
+                    <% if (g2Passed && !gPassed) { %>
                         <button type="submit" class="btn btn-primary">Save</button>
                     <% } %>    
                 </form>  

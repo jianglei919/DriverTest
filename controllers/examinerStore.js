@@ -19,9 +19,16 @@ module.exports = async (req, res) => {
             Comment: comment
         }
 
+        //如果Fail，清空预约记录
+        if (testResult === 'FAIL') {
+            newDriver.AppointmentId = null;
+        }
+
         await DriverTestInfo.findByIdAndUpdate(id, newDriver);
 
-        res.json({ success: true, updatedDriver: oldDriverInfo });
+        const newDriverInfo = await DriverTestInfo.findById(id);
+
+        res.json({ success: true, updatedDriver: newDriverInfo });
         console.log('examiner store end.');
     } catch (error) {
         console.error('Error processing examiner page: ', error);

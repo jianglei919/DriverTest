@@ -5,13 +5,13 @@ const timeSlots = [
     "12:00", "12:30", "13:00", "13:30", "14:00"
 ];
 
-const datePicker = () => {
+const datePicker = (dateInput) => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    $('#date').attr('min', formattedDate);
+    dateInput.attr('min', formattedDate);
 };
 
 const adminCheckTimeSlot = () => {
@@ -275,7 +275,8 @@ const bindUpdateEvents = () => {
 
 $(document).ready(() => {
 
-    datePicker();
+    datePicker($('#date'));
+    datePicker($('#adminDate'));
 
     if ($('#postAppointmentForm').val() != undefined) {
         adminCheckTimeSlot();

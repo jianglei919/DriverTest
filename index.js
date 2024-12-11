@@ -52,7 +52,7 @@ const g2Controller = require('./controllers/g2');
 const g2StoreController = require('./controllers/g2Store');
 
 const gController = require('./controllers/g');
-const gStoreController = require('./controllers/g2Store');
+const gStoreController = require('./controllers/gStore');
 
 const adminController = require('./controllers/admin');
 const adminStoreController = require('./controllers/adminStore');
