@@ -86,5 +86,5 @@ This system is designed to manage driving test appointments, assessments, and us
 
 1. **Clone the Repository**:
    ```bash
-   git clone <git@github.com:jianglei919/DriverTest.git>
-   cd <DriverTest>
+   git clone <repository_url>
+   cd <repository_name>
