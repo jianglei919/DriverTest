@@ -88,3 +88,28 @@ This system is designed to manage driving test appointments, assessments, and us
    ```bash
    git clone <repository_url>
    cd <repository_name>
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+
+3. **Start the Application**:
+   ```bash
+   npm start
+
+4. **Access the Application**:
+   Open your browser and navigate to http://localhost:4000.
+
+---
+
+## **Project Structure**
+    ```bash
+    .
+    ├── controllers       # Contains logic for handling routes
+    ├── middleware        # Middleware for authentication and permissions
+    ├── models            # Mongoose schemas and models
+    ├── public            # Static assets (CSS, JS, images)
+    ├── routes            # Route definitions
+    ├── views             # EJS templates for rendering pages
+    ├── index.js          # Entry point for the application
+    
