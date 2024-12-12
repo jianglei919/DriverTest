@@ -146,8 +146,6 @@ module.exports = {
                         // if passwords match
                         // store user session
                         req.session.userId = driverInfo._id;
-                        req.session.driverType = driverInfo.UserType;
-                        req.session.licenseNo = driverInfo.LicenseNo;
                         req.session.driverInfo = driverInfo;
                         req.session.appointmentInfo = appointmentInfo;
                         res.redirect('/');

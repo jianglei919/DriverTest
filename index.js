@@ -36,18 +36,14 @@ app.use(
 
 // Globals
 global.loggedIn = null;
-global.isDriver = null;
-global.isAdmin = null;
-global.isExaminer = null;
 global.isDefaultInfo = null;
+global.userType = 'Driver';
 
 // Middleware for setting global variables
 app.use('*', (req, res, next) => {
   loggedIn = req.session.userId;
-  isDriver = req.session.driverType === 'Driver';
-  isAdmin = req.session.driverType === 'Admin';
-  isExaminer = req.session.driverType === 'Examiner';
-  isDefaultInfo = req.session.licenseNo === 'default';
+  userType = req.session.driverInfo?.UserType;
+  isDefaultInfo = req.session.driverInfo?.LicenseNo === 'default';
   next();
 });
 
@@ -80,7 +76,4 @@ app.use((req, res) => res.status(404).render('notFound'));
 // Start the Server
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
-  console.log('Views path:', app.get('views'));
-  console.log('__dirname:', __dirname);
-  console.log('Views directory exists?', fs.existsSync(path.join(__dirname, 'views')));
 });

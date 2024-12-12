@@ -83,8 +83,6 @@ module.exports = {
 
             // 更新 session 信息
             const updatedDriverInfo = await DriverTestInfo.findById(_id);
-            req.session.driverType = updatedDriverInfo.UserType;
-            req.session.licenseNo = updatedDriverInfo.LicenseNo;
             req.session.driverInfo = updatedDriverInfo;
 
             console.log("G2 page end. updatedDriverInfo=", updatedDriverInfo);

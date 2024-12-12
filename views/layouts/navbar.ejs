@@ -10,17 +10,17 @@
           <ul class="navbar-nav ms-auto py-4 py-lg-0">
               <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/">HOME</a></li>
 
-              <% if (isDriver) { %>
+              <% if (userType === 'Driver') { %>
               <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/driver/g2">G2_TEST</a></li>
               <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/driver/g">G_TEST</a></li>
               <% } %>
 
-              <% if (isAdmin) { %>
+              <% if (userType === 'Admin') { %>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/admin/appointment">APPOINTMENT</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/admin/candidate">CANDIDATE</a></li>
               <% } %>
 
-              <% if (isExaminer) { %>
+              <% if (userType === 'Examiner') { %>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/examiner">EXAM</a></li>
               <% } %>
 
