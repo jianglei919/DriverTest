@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const expressSession = require('express-session');
+const mongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
@@ -24,12 +25,19 @@ app.set('views', path.join(__dirname, 'views'));
 // Flash messages
 app.use(flash());
 
-// Session management
+// Configure session store
 app.use(
   expressSession({
-    secret: 'keyboard cat',
+    secret: 'keyboard cat', // Replace with a secure secret
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    store: mongoStore.create({
+      mongoUrl: 'mongodb+srv://leighton:qwerty123456@cluster0.3vvnl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    }),
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
   })
 );
 
