@@ -1,5 +1,6 @@
 module.exports = {
     routeHome: (req, res) => {
-        res.render('home');
+        console.log('Home page');
+        res.render('home', {title: 'Welcom to home Page'});
     }
 };

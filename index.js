@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
@@ -94,4 +95,7 @@ app.use((req, res) => res.render('notFound'));
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
+  console.log('views path: ' + app.get('views'));
+  console.log('__dirname: ' + __dirname);
+  console.log('exist views/home.ejs ? ' + fs.existsSync(path.join(__dirname, 'views', 'home.ejs')));
 });
