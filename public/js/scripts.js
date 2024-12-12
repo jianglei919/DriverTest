@@ -26,7 +26,7 @@ const adminCheckTimeSlot = () => {
 
         // 请求服务器获取时间槽数据
         $.ajax({
-            url: '/get/appointment',
+            url: '/admin/appointment/retrieval',
             method: 'GET',
             data: { date },
             success: function (response) {
@@ -88,11 +88,11 @@ const adminCheckTimeSlot = () => {
 const sotreAppointment = () => {
     $('#postAppointmentForm').on('submit', function (e) {
         e.preventDefault(); // 阻止表单的默认提交行为
-    
+
         const formData = $(this).serialize(); // 获取表单数据
-    
+
         $.ajax({
-            url: '/admin/store', // 替换为实际后端路径
+            url: '/admin/appointment/add', // 替换为实际后端路径
             method: 'POST',
             data: formData,
             success: function (response) {
@@ -128,7 +128,7 @@ const queryTimeSlot = () => {
 
         // Fetch available slots from the server
         $.ajax({
-            url: '/get/appointment',
+            url: '/admin/appointment/retrieval',
             method: 'GET',
             data: { date },
             success: function (response) {
@@ -177,7 +177,7 @@ const retrievalDriverInfos = () => {
 
         // AJAX 请求后端接口
         $.ajax({
-            url: '/examiner/retrieval',
+            url: '/examiner/driverInfo/retrieval',
             type: 'GET',
             data: formData,
             success: function (result) {
@@ -251,7 +251,7 @@ const bindUpdateEvents = () => {
 
         // AJAX 请求更新接口
         $.ajax({
-            url: `/examiner/store/${driverId}`,
+            url: `/examiner/driverInfo/update/${driverId}`,
             type: 'POST',
             data: formData,
             success: function (result) {

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('layouts/header'); -%>
+
+    <body>
+
+        <%- include('layouts/navbar'); -%>
+
+            <!-- Page Header-->
+            <header class="masthead" style="background-image: url('/assets/img/admin-bg.png')">
+
+            </header>
+            <!-- Main Content-->
+            <main class="mb-4">
+                <div class="container">
+                    <h1>Candidate List</h1>
+
+                    <% if(errors && errors.length > 0){ %>
+                        <ul class="list-group"></ul>
+                        <% for (var i = 0; i < errors.length; i++) { %>
+                            <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
+                        <% } %>
+                        </ul>
+                    <% } %>
+                    <% if(success){ %>
+                        <label class="list-group-item-success">
+                            <%= success %>
+                        </label>
+                    <% } %>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>License No</th>
+                                <th>Test Type</th>
+                                <th>Test Result</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% candidates.forEach(candidate => { %>
+                                <tr>
+                                    <td><%= candidate.firstname %> <%= candidate.lastname %></td>
+                                    <td><%= candidate.LicenseNo %></td>
+                                    <td><%= candidate.TestType %></td>
+                                    <td><%= candidate.TestResult %></td>
+                                    <td>
+                                        <% if (candidate.TestResult === 'PASS' && !candidate.hasOrder) { %>
+                                            <form action="/admin/createOrder" method="POST" style="display:inline;">
+                                                <input type="hidden" name="candidateId" value="<%= candidate._id %>">
+                                                <button type="submit" class="btn btn-primary">Create Order</button>
+                                            </form>
+                                        <% } else if (candidate.hasOrder) { %>
+                                            <button class="btn btn-secondary" disabled>Order Exists</button>
+                                        <% } else { %>
+                                            <button class="btn btn-secondary" disabled>Unavailable</button>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+
+            <%- include('layouts/footer'); -%>
+
+            <%- include('layouts/scripts'); -%>
+
+    </body>
+
+</html>

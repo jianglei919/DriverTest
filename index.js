@@ -6,6 +6,8 @@ const flash = require('connect-flash');
 const app = new express();
 const ejs = require('ejs');
 
+const port = process.env.PORT || 4000;
+
 app.set('view engine', 'ejs');
 
 global.loggedIn = null;
@@ -38,30 +40,12 @@ mongoose.connect(
   'mongodb+srv://leighton:qwerty123456@cluster0.3vvnl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 );
 
-
-const homeController = require('./controllers/home');
-
-const signUpUserController = require('./controllers/signUp');
-const storeUserController = require('./controllers/storeUser');
-
-const loginController = require('./controllers/login');
-const logoutController = require('./controllers/logout');
-const userLoginController = require('./controllers/userLogin');
-
-const g2Controller = require('./controllers/g2');
-const g2StoreController = require('./controllers/g2Store');
-
-const gController = require('./controllers/g');
-const gStoreController = require('./controllers/gStore');
-
-const adminController = require('./controllers/admin');
-const adminStoreController = require('./controllers/adminStore');
-
-const appointmentController = require('./controllers/getAppointment');
-
-const examinerController = require('./controllers/examiner');
-const examinerRetrievalController = require('./controllers/examinerRetrieval');
-const examinerStoreController = require('./controllers/examinerStore');
+const homeController = require('./controllers/homeController');
+const userController = require('./controllers/userController');
+const g2Controller = require('./controllers/g2Controller');
+const gController = require('./controllers/gController');
+const adminController = require('./controllers/adminController');
+const examinerController = require('./controllers/examinerController');
 
 const authMiddleware = require('./middleware/authMiddleware');
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
@@ -70,37 +54,39 @@ const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthen
 app.get('/', homeController);
 
 //SignUp
-app.get('/auth/signUp', redirectIfAuthenticatedMiddleware, signUpUserController)
-app.post('/user/signUp', redirectIfAuthenticatedMiddleware, storeUserController);
+app.get('/auth/signUp', redirectIfAuthenticatedMiddleware, userController.routeSignUp)
+app.post('/user/signUp', redirectIfAuthenticatedMiddleware, userController.userSignUp);
 
 // Login/Logout
-app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
-app.get('/auth/logout', logoutController);
-app.post('/user/login', redirectIfAuthenticatedMiddleware, userLoginController);
+app.get('/auth/login', redirectIfAuthenticatedMiddleware, userController.routeLogin);
+app.get('/auth/logout', userController.logout);
+app.post('/user/login', redirectIfAuthenticatedMiddleware, userController.userLogin);
 
 // G2
-app.get('/g2', authMiddleware, g2Controller);
-app.post('/g2/store', authMiddleware, g2StoreController);
+app.get('/driver/g2', authMiddleware, g2Controller.routeG2);
+app.post('/driver/g2/store', authMiddleware, g2Controller.g2Store);
 
 // G
-app.get('/g', authMiddleware, gController);
-app.post('/g/store', authMiddleware, gStoreController);
+app.get('/driver/g', authMiddleware, gController.routeG);
+app.post('/driver/g/store', authMiddleware, gController.gStore);
 
-//admin
-app.get('/admin', authMiddleware, adminController);
-app.post('/admin/store', authMiddleware, adminStoreController);
+//Appointment
+app.get('/admin/appointment', authMiddleware, adminController.routeAppointment);
+app.get('/admin/appointment/retrieval', authMiddleware, adminController.retrievalAppointment);
+app.post('/admin/appointment/add', authMiddleware, adminController.addAppointment);
 
-//appointment
-app.get('/get/appointment', authMiddleware, appointmentController);
+//Candidate
+app.get('/admin/candidate', adminController.getCandidates);
+app.post('/admin/createOrder', adminController.createOrder);
 
-//examiner
-app.get('/examiner', authMiddleware, examinerController)
-app.get('/examiner/retrieval', authMiddleware, examinerRetrievalController);
-app.post('/examiner/store/:id', authMiddleware, examinerStoreController);
+//Examiner
+app.get('/examiner', authMiddleware, examinerController.routeExaminer);
+app.get('/examiner/driverInfo/retrieval', authMiddleware, examinerController.retrievalDriverInfo);
+app.post('/examiner/driverInfo/update/:id', authMiddleware, examinerController.updateDriverInfo);
 
 // notfound
-app.use((req, res) => res.render('Notfound'));
+app.use((req, res) => res.render('notFound'));
 
-app.listen(4000, () => {
-  console.log('App listening on port 4000');
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
 });
