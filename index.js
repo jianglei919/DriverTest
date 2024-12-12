@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
@@ -8,7 +9,11 @@ const ejs = require('ejs');
 
 const port = process.env.PORT || 4000;
 
+// Set the view engine
 app.set('view engine', 'ejs');
+
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
 
 global.loggedIn = null;
 global.isDriver = null;
