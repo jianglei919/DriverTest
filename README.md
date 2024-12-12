@@ -103,7 +103,6 @@ This system is designed to manage driving test appointments, assessments, and us
 ---
 
 ## **Project Structure**
-    ```bash
     .
     ├── controllers       # Contains logic for handling routes
     ├── middleware        # Middleware for authentication and permissions
