@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const mongoose = require('mongoose');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
@@ -71,7 +70,10 @@ app.use('/admin', adminRoutes);
 app.use('/examiner', examinerRoutes);
 
 // Handle 404 Errors
-app.use((req, res) => res.status(404).render('notFound'));
+app.use((req, res) => {
+  console.error(`404 Error: ${req.url} not found`);
+  res.status(404).render('notFound');
+});
 
 // Start the Server
 app.listen(port, () => {
