@@ -1,3 +1,5 @@
-module.exports = (req, res) => {
-    res.render('home');
+module.exports = {
+    routeHome: (req, res) => {
+        res.render('home');
+    }
 };

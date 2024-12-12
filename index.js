@@ -51,7 +51,7 @@ const authMiddleware = require('./middleware/authMiddleware');
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
 
 //Home
-app.get('/', homeController);
+app.get('/', homeController.routeHome);
 
 //SignUp
 app.get('/auth/signUp', redirectIfAuthenticatedMiddleware, userController.routeSignUp)
