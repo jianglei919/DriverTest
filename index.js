@@ -76,8 +76,8 @@ app.get('/admin/appointment/retrieval', authMiddleware, adminController.retrieva
 app.post('/admin/appointment/add', authMiddleware, adminController.addAppointment);
 
 //Candidate
-app.get('/admin/candidate', adminController.getCandidates);
-app.post('/admin/createOrder', adminController.createOrder);
+app.get('/admin/candidate', authMiddleware, adminController.getCandidates);
+app.post('/admin/createOrder', authMiddleware, adminController.createOrder);
 
 //Examiner
 app.get('/examiner', authMiddleware, examinerController.routeExaminer);
