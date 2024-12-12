@@ -1,101 +1,86 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
+const mongoose = require('mongoose');
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
-const app = new express();
-const ejs = require('ejs');
-
+// App Initialization
+const app = express();
 const port = process.env.PORT || 4000;
 
-// Set the view engine
-app.set('view engine', 'ejs');
+// Middleware for parsing requests
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// Set the views directory
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Set EJS as view engine
+app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Flash messages
+app.use(flash());
+
+// Session management
+app.use(
+  expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// Globals
 global.loggedIn = null;
 global.isDriver = null;
 global.isAdmin = null;
 global.isExaminer = null;
 global.isDefaultInfo = null;
 
-app.use(express.static('public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(flash());
-app.use(
-  expressSession({
-    secret: 'keyboard cat',
-  })
-);
+// Middleware for setting global variables
 app.use('*', (req, res, next) => {
   loggedIn = req.session.userId;
-  isDriver = req.session.driverType == 'Driver';
-  isAdmin = req.session.driverType == 'Admin';
-  isExaminer = req.session.driverType == 'Examiner';
-  isDefaultInfo = req.session.licenseNo == 'default';
+  isDriver = req.session.driverType === 'Driver';
+  isAdmin = req.session.driverType === 'Admin';
+  isExaminer = req.session.driverType === 'Examiner';
+  isDefaultInfo = req.session.licenseNo === 'default';
   next();
 });
 
-const mongoose = require('mongoose');
+// MongoDB Connection
 mongoose.connect(
   'mongodb+srv://leighton:qwerty123456@cluster0.3vvnl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-);
+  )
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
 
-const homeController = require('./controllers/homeController');
-const userController = require('./controllers/userController');
-const g2Controller = require('./controllers/g2Controller');
-const gController = require('./controllers/gController');
-const adminController = require('./controllers/adminController');
-const examinerController = require('./controllers/examinerController');
+// Import Routes
+const homeRoutes = require('./routes/homeRoutes');
+const userRoutes = require('./routes/userRoutes');
+const g2Routes = require('./routes/g2Routes');
+const gRoutes = require('./routes/gRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const examinerRoutes = require('./routes/examinerRoutes');
 
-const authMiddleware = require('./middleware/authMiddleware');
-const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
+// Route Handlers
+app.use('/', homeRoutes);
+app.use('/auth', userRoutes);
+app.use('/driver/g2', g2Routes);
+app.use('/driver/g', gRoutes);
+app.use('/admin', adminRoutes);
+app.use('/examiner', examinerRoutes);
 
-//Home
-app.get('/', homeController.routeHome);
+// Handle 404 Errors
+app.use((req, res) => res.status(404).render('notFound'));
 
-//SignUp
-app.get('/auth/signUp', redirectIfAuthenticatedMiddleware, userController.routeSignUp)
-app.post('/user/signUp', redirectIfAuthenticatedMiddleware, userController.userSignUp);
-
-// Login/Logout
-app.get('/auth/login', redirectIfAuthenticatedMiddleware, userController.routeLogin);
-app.get('/auth/logout', userController.logout);
-app.post('/user/login', redirectIfAuthenticatedMiddleware, userController.userLogin);
-
-// G2
-app.get('/driver/g2', authMiddleware, g2Controller.routeG2);
-app.post('/driver/g2/store', authMiddleware, g2Controller.g2Store);
-
-// G
-app.get('/driver/g', authMiddleware, gController.routeG);
-app.post('/driver/g/store', authMiddleware, gController.gStore);
-
-//Appointment
-app.get('/admin/appointment', authMiddleware, adminController.routeAppointment);
-app.get('/admin/appointment/retrieval', authMiddleware, adminController.retrievalAppointment);
-app.post('/admin/appointment/add', authMiddleware, adminController.addAppointment);
-
-//Candidate
-app.get('/admin/candidate', authMiddleware, adminController.getCandidates);
-app.post('/admin/createOrder', authMiddleware, adminController.createOrder);
-
-//Examiner
-app.get('/examiner', authMiddleware, examinerController.routeExaminer);
-app.get('/examiner/driverInfo/retrieval', authMiddleware, examinerController.retrievalDriverInfo);
-app.post('/examiner/driverInfo/update/:id', authMiddleware, examinerController.updateDriverInfo);
-
-// notfound
-app.use((req, res) => res.render('notFound'));
-
+// Start the Server
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
-  console.log('views path: ' + app.get('views'));
-  console.log('__dirname: ' + __dirname);
-  console.log('exist views/home.ejs ? ' + fs.existsSync(path.join(__dirname, 'views', 'home.ejs')));
+  console.log('Views path:', app.get('views'));
+  console.log('__dirname:', __dirname);
+  console.log('Views directory exists?', fs.existsSync(path.join(__dirname, 'views')));
 });
