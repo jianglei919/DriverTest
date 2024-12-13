@@ -40,13 +40,13 @@ module.exports = {
     gStore: async (req, res) => {
         try {
             const _id = req.session.userId;
-            console.log("G2 page start. _id=" + _id);
+            console.log("G page start. _id=" + _id);
 
             const oldDriverInfo = await DriverTestInfo.findById(_id);
             if (!oldDriverInfo) {
-                console.log("G2 page not find by _id=" + _id);
+                console.log("G page not find by _id=" + _id);
                 req.flash('validationErrors', ['Driver not found']);
-                res.redirect('/driver/g2');
+                res.redirect('/driver/g');
                 return;
             }
 
@@ -59,7 +59,7 @@ module.exports = {
                     year: reqDriverInfo.car_details.year,
                     platno: reqDriverInfo.car_details.platno
                 },
-                TestType: 'G2'
+                TestType: 'G'
             };
 
             // 更新个人信息
@@ -77,7 +77,7 @@ module.exports = {
 
                 if (!newAppointmentInfo) {
                     req.flash('validationErrors', ['Invalid Appointment ID']);
-                    res.redirect('/driver/g2');
+                    res.redirect('/driver/g');
                     return;
                 }
 
@@ -105,12 +105,12 @@ module.exports = {
             const updatedDriverInfo = await DriverTestInfo.findById(_id);
             req.session.driverInfo = updatedDriverInfo;
 
-            console.log("G2 page end. updatedDriverInfo=", updatedDriverInfo);
+            console.log("G page end. updatedDriverInfo=", updatedDriverInfo);
             req.flash('success', 'Successfully updated information');
         } catch (error) {
-            console.error('Error processing G2 page: ', error);
-            req.flash('validationErrors', ['Error processing G2 page request']);
+            console.error('Error processing G page: ', error);
+            req.flash('validationErrors', ['Error processing G page request']);
         }
-        res.redirect('/driver/g2');
+        res.redirect('/driver/g');
     }
 };
