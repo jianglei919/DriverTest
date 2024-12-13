@@ -26,7 +26,6 @@ const datePicker = (dateInput) => {
 const adminCheckTimeSlot = () => {
   $("#adminDate").on("change", function () {
     const date = $(this).val();
-    console.log("Date was changed:", date);
 
     // 清空之前的按钮
     $("#adminTimeButtons").empty();
