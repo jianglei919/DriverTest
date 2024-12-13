@@ -3,6 +3,9 @@ const AppointmentInfo = require('../models/AppointmentInfo.js');
 
 module.exports = {
     routeG2: (req, res) => {
+        if (req.session.driverInfo?.UserType !== 'Driver') {
+            return res.redirect('/');
+        }
         let g2Passed = req.session.driverInfo.TestResult == 'PASS' && req.session.driverInfo.TestType == 'G2'
         const gPassed = req.session.driverInfo.TestResult == 'PASS' && req.session.driverInfo.TestType == 'G'
         g2Passed = gPassed ? true : g2Passed;

@@ -5,6 +5,9 @@ const OrderInfo = require('../models/OrderInfo.js');
 module.exports = {
     //路由到预约页面
     routeAppointment: (req, res) => {
+        if (req.session.driverInfo?.UserType !== 'Admin') {
+            return res.redirect('/');
+        }
         var date = '';
         var time = '';
         const data = req.flash('data')[0];

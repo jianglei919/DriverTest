@@ -3,6 +3,9 @@ const DriverTestInfo = require('../models/DriverTestInfo');
 module.exports = {
     //route to the Examiner.ejs page
     routeExaminer: (req, res) => {
+        if (req.session.driverInfo?.UserType !== 'Examiner') {
+            return res.redirect('/');
+        }
         const data = req.flash('data')[0];
         const testResult = data?.testResult || '';
         const comment = data?.comment || '';
