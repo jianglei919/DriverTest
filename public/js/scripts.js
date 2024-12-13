@@ -37,6 +37,14 @@ const adminCheckTimeSlot = () => {
                     timeSlots.forEach(time => {
                         const button = $(`<button class="time-slot available" type="button">${time}</button>`);
                         $("#adminTimeButtons").append(button);
+
+                         // 绑定点击事件
+                         button.on('click', event => {
+                            event.preventDefault();
+                            $('.time-slot').removeClass('selected');
+                            $(event.target).addClass('selected');
+                            $('#selectedTime').val(time); // 更新选中的时间
+                        });
                     });
                     return;
                 }
