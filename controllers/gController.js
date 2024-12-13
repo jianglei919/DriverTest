@@ -7,7 +7,9 @@ module.exports = {
       return res.redirect("/");
     }
 
-    const driverInfo = await DriverTestInfo.findById(req.session.driverInfo);
+    const driverInfo = await DriverTestInfo.findById(
+      req.session.driverInfo._id
+    );
 
     let g2Passed =
       driverInfo.TestResult == "PASS" && driverInfo.TestType == "G2";
@@ -19,7 +21,7 @@ module.exports = {
 
     if (isDefaultInfo) {
       res.render("g2", {
-        driverInfo: req.session.driverInfo,
+        driverInfo,
         appointmentInfo: req.session.appointmentInfo,
         g2Passed: g2Passed,
         gPassed: gPassed,
@@ -27,14 +29,15 @@ module.exports = {
         success: req.flash("success"),
       });
     } else {
-      const driverInfo = req.session.driverInfo;
       let appointmentInfo = req.session.appointmentInfo;
+
       if (g2Passed && driverInfo.TestType === "G2") {
         driverInfo.TestType = "G";
         appointmentInfo = {};
       }
+
       res.render("g", {
-        driverInfo: driverInfo,
+        driverInfo,
         appointmentInfo: appointmentInfo,
         g2Passed: g2Passed,
         gPassed: gPassed,
