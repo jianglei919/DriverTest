@@ -15,40 +15,43 @@
         <main class="mb-4">
             <div class="container">
                 <h2>SignUp Page</h2>
-                <% if(errors != null && errors.length > 0){ %>
-                    <ul class="list-group"></ul>
-                    <% for (var i = 0; i < errors.length; i++) { %>
-                        <li class="list-group-item list-group-item-danger"><%= errors[i] %></li>
-                    <% } %>
-                    </ul>
+                <% if (errors && errors.length > 0) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <ul class="mb-0">
+                            <% errors.forEach(function (error) { %>
+                                <li><%= error %></li>
+                            <% }); %>
+                        </ul>
+                    </div>
                 <% } %>
-                <form id="signUpForm" action="/auth/signUp" method="post">
-                    <div class="form-group">
-                        <label for="Username">User Name:</label>
+                <form id="signUpForm" action="/auth/signUp" method="post" class="py-4">
+                    <div class="form-group mb-3">
+                        <label for="Username" class="form-label">User Name:</label>
                         <input type="text" class="form-control" id="Username" placeholder="Enter user name" name="Username" value="<%= username %>" required>
-                        
-                        <br>
+                    </div>
 
-                        <label for="Password">Password:</label>
-                        <input type="password" class="form-control" id="Password" placeholder="Enter password" name="Password" value="<%= password %>" required>
+                    <div class="form-group mb-3">
+                        <label for="Password" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="Password" placeholder="Enter password" name="Password" required>
+                    </div>
 
-                        <br>
+                    <div class="form-group mb-3">
+                        <label for="Password2" class="form-label">Confirm Password:</label>
+                        <input type="password" class="form-control" id="Password2" placeholder="Confirm password" name="Password2" required>
+                    </div>
 
-                        <label for="Password2">Confirm Password:</label>
-                        <input type="password" class="form-control" id="Password2" placeholder="Enter password" name="Password2" value="<%= password %>" required>
-
-                        <br>
-
-                        <label for="UserType">UserType:</label>
-                        <select id="UserType" name="UserType">
+                    <div class="form-group mb-3">
+                        <label for="UserType" class="form-label">User Type:</label>
+                        <select id="UserType" name="UserType" class="form-select">
                             <option value="Driver">Driver</option>
                             <option value="Examiner">Examiner</option>
                             <option value="Admin">Admin</option>
                         </select>
                     </div>
-                    <br>
-                    <button id="signUpBtn" type="submit" class="btn btn-primary">Sign up</button>
+
+                    <button id="signUpBtn" type="submit" class="btn btn-primary w-100">Sign Up</button>
                 </form>
+
             </div>
         </main>
 
