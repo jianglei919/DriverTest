@@ -19,6 +19,8 @@ module.exports = {
 
     g2Passed = gPassed ? true : g2Passed;
 
+    req.session.driverInfo = driverInfo;
+
     res.render("g2", {
       driverInfo,
       appointmentInfo: req.session.appointmentInfo,

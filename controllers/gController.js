@@ -19,6 +19,8 @@ module.exports = {
 
     g2Passed = gPassed ? true : g2Passed;
 
+    req.session.driverInfo = driverInfo;
+
     if (isDefaultInfo) {
       res.render("g2", {
         driverInfo,
